@@ -1,0 +1,49 @@
+{
+  "name": "bridgescore-mcp",
+  "version": "0.2.0",
+  "description": "MCP server that scores dialogue transcripts for bridging quality - receptiveness, perspective-taking, contempt, curiosity, concession, and personal disclosure - with the exact quoted spans behind every number. Deterministic, local, no API key.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "bridgescore-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "docs",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "node --test dist/parse.test.js",
+    "prepare": "npm run build",
+    "calibrate": "node dist/calibrate.js",
+    "smoke": "node dist/smoke.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Beyond Partisan (https://beyondpartisan.org)",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "dialogue",
+    "bridging",
+    "depolarization",
+    "civic-tech",
+    "conversation-analysis",
+    "transcript",
+    "measurement",
+    "nonprofit"
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "note": "Calibration set. Each case is a short transcript written to isolate one behavior, plus the ordering a valid instrument must produce. These are assertions about RELATIVE ordering, not about absolute score values, because absolute values depend on thresholds that are still provisional while ordering is what the construct actually claims.",
+  "cases": [
+    {
+      "id": "recept.acknowledge_vs_assert",
+      "indicator": "receptiveness",
+      "claim": "Acknowledging the other position before disagreeing beats flat assertion.",
+      "higher": "Ana: I understand why you'd read it that way, and I think there's something to it. My own sense is the timeline tells a different story, though I could be wrong about that.",
+      "lower": "Ana: The timeline says otherwise. That is what the record shows and it is not ambiguous."
+    },
+    {
+      "id": "recept.hollow_vs_plain",
+      "indicator": "receptiveness",
+      "claim": "An acknowledgment immediately cancelled scores no higher than plain disagreement.",
+      "higher": "Ana: I disagree with the conclusion. My read of the second study is different from yours.",
+      "lower": "Ana: I hear you, but you are completely wrong and there's no way that holds up.",
+      "allowTie": true
+    },
+    {
+      "id": "recept.descriptive_absolutes_not_penalized",
+      "indicator": "receptiveness",
+      "claim": "Describing a recurring pattern with 'always' does not count as closed-mindedness.",
+      "higher": "Ana: I hear that, and I think you have a point. It just always seems to land on our street, and I don't know why that is.",
+      "lower": "Ana: You always do this. You never listen and everyone knows it."
+    },
+    {
+      "id": "persp.steelman_vs_dismiss",
+      "indicator": "perspective_taking",
+      "claim": "Articulating the other's reasoning beats attributing motives to them.",
+      "higher": "Ana: So you're saying the worry is that families get priced out before the units come online. I can see why that matters to you, and it's a fair question.",
+      "lower": "Ana: You just want to protect your property value. People like you always dress it up as concern for families."
+    },
+    {
+      "id": "persp.generic_empathy_is_weak",
+      "indicator": "perspective_taking",
+      "claim": "Naming the other's actual position beats a contentless empathy phrase.",
+      "higher": "Ana: If I understand you, your concern is the hospital shift timing. Correct me if I'm wrong about that.",
+      "lower": "Ana: I understand where you're coming from. Anyway, here is why the proposal works."
+    },
+    {
+      "id": "contempt.person_vs_claim",
+      "indicator": "contempt",
+      "claim": "Attacking the person scores higher than attacking the claim, however forcefully.",
+      "higher": "Ana: That is a stupid take and you are being ridiculous. Congratulations on reading the headline.",
+      "lower": "Ana: I think that conclusion is badly wrong, and the evidence cuts hard the other way."
+    },
+    {
+      "id": "contempt.condescension_counts",
+      "indicator": "contempt",
+      "claim": "Condescension and superiority claims register as contempt.",
+      "higher": "Ana: Let me explain this slowly. Anyone who actually read the report would know better. Do your research.",
+      "lower": "Ana: I read it differently. Section four seems to say the opposite of what you're describing."
+    },
+    {
+      "id": "curiosity.followup_vs_topic_switch",
+      "indicator": "curiosity",
+      "claim": "A question building on what was just said beats a question that changes the subject.",
+      "context": "Bo: My sister drives forty minutes home from the hospital after every night shift, and twice she has fallen asleep at a light.",
+      "higher": "Ana: How long has your sister been driving that hospital shift?",
+      "lower": "Ana: What do you think about the parking meter proposal downtown?"
+    },
+    {
+      "id": "curiosity.open_vs_leading",
+      "indicator": "curiosity",
+      "claim": "An open question beats a question shaped as an accusation.",
+      "higher": "Ana: What led you to that view? I'd like to hear more about how you got there.",
+      "lower": "Ana: Do you really believe that? How can you possibly think that is true?"
+    },
+    {
+      "id": "concession.grant_vs_pivot",
+      "indicator": "concession",
+      "claim": "Actually granting a point beats a concession immediately withdrawn.",
+      "higher": "Ana: You're right about the notification process. I hadn't considered that, and it changes how I read the rest.",
+      "lower": "Ana: You're right, but that doesn't matter at all here and the conclusion stands."
+    },
+    {
+      "id": "concession.politeness_is_not_concession",
+      "indicator": "concession",
+      "claim": "A politeness formula with nothing granted scores below a real grant.",
+      "higher": "Ana: I was wrong about the enrollment numbers. I stand corrected on that.",
+      "lower": "Ana: Great point, thanks for sharing. Anyway, as I was saying, the plan works."
+    },
+    {
+      "id": "disclosure.story_vs_credential",
+      "indicator": "personal_disclosure",
+      "claim": "A specific personal experience beats an identity claim used as standing.",
+      "higher": "Ana: When I was twenty-six I was still in my parents' basement, and I remember how much I felt like I had failed. My son is there now.",
+      "lower": "Ana: As a parent, I can tell you that this policy is misguided."
+    },
+    {
+      "id": "disclosure.abstract_scores_low",
+      "indicator": "personal_disclosure",
+      "claim": "Personal narrative beats abstract policy argument.",
+      "higher": "Ana: My sister is a nurse six blocks from here. I remember the night she called me from the car because she couldn't stay awake.",
+      "lower": "Ana: The literature suggests that housing supply constraints correlate with longer commute times for essential workers."
+    },
+
+    {
+      "id": "graded.recept.strong_vs_mild",
+      "indicator": "receptiveness",
+      "claim": "Sustained receptive work outscores a single hedge. Both sides score above zero.",
+      "higher": "Ana: So you're saying the timing is the real problem, and if I understand you the worry is families leaving before the units open. That's a fair question and I can see why it matters to you. My own read is different, though I could be wrong.",
+      "lower": "Ana: I think the timeline probably works out, more or less.",
+      "bothNonZero": true
+    },
+    {
+      "id": "graded.persp.checkable_vs_gestural",
+      "indicator": "perspective_taking",
+      "claim": "A checkable restatement outscores merely naming that the other has a view. Both score.",
+      "higher": "Ana: If I'm following, your position is that the fourth floor is what breaks it. Correct me if I'm wrong there.",
+      "lower": "Ana: I know you have your perspective on this and I respect that.",
+      "bothNonZero": true
+    },
+    {
+      "id": "graded.contempt.labels_vs_dismissal",
+      "indicator": "contempt",
+      "claim": "Labeling the person outscores a bare dismissal. Both score.",
+      "higher": "Ana: You are being ridiculous. That is a stupid, delusional take and frankly it's pathetic.",
+      "lower": "Ana: Whatever. This is pointless.",
+      "bothNonZero": true
+    },
+    {
+      "id": "graded.concession.update_vs_grant",
+      "indicator": "concession",
+      "claim": "Stating a changed view outscores granting a single point. Both score.",
+      "higher": "Ana: I've changed my mind on this. I hadn't considered the shift timing and I'm less sure than I was an hour ago.",
+      "lower": "Ana: You're right about the notification.",
+      "bothNonZero": true
+    },
+    {
+      "id": "graded.curiosity.followup_vs_open",
+      "indicator": "curiosity",
+      "claim": "A follow-up building on the previous turn outscores a generic open question. Both score.",
+      "context": "Bo: My sister drives forty minutes home from the hospital after every night shift.",
+      "higher": "Ana: What is that drive like for your sister after a night shift?",
+      "lower": "Ana: What do you think we should do about it?",
+      "bothNonZero": true
+    },
+    {
+      "id": "graded.disclosure.specific_vs_vague",
+      "indicator": "personal_disclosure",
+      "claim": "A concrete incident outscores vague self-reference. Both score.",
+      "higher": "Ana: I remember the night my sister called me from the car because she couldn't stay awake. I was scared.",
+      "lower": "Ana: In my experience these things are complicated.",
+      "bothNonZero": true
+    },
+    {
+      "id": "quotes.double_quoted_speech_excluded",
+      "indicator": "concession",
+      "claim": "A concession inside double quotes belongs to whoever was quoted, so it does not count for the speaker.",
+      "higher": "Ana: I was wrong about the numbers and I should have checked before I said it.",
+      "lower": "Ana: He stood up and said \"you're right, I was wrong\", and everyone just moved on."
+    },
+    {
+      "id": "quotes.curly_quoted_speech_excluded",
+      "indicator": "concession",
+      "claim": "Curly quotes are excluded the same way, which matters because word processors produce them.",
+      "higher": "Ana: I was wrong about the numbers and I should have checked before I said it.",
+      "lower": "Ana: He stood up and said “you’re right, I was wrong”, and everyone just moved on."
+    },
+    {
+      "id": "quotes.apostrophes_still_score",
+      "indicator": "concession",
+      "claim": "Excluding quotations must not swallow ordinary contractions.",
+      "higher": "Ana: You're right, and I hadn't considered it at all.",
+      "lower": "Ana: The proposal remains sound and the numbers hold up."
+    }
+  ],
+
+  "knownLimitations": [
+    {
+      "id": "limit.sarcastic_agreement",
+      "indicator": "receptiveness",
+      "claim": "Sarcastic agreement should not score as receptiveness. Pattern matching cannot see tone, so this is expected to fail.",
+      "higher": "Ana: I think there's something to what you're saying, and I could be wrong about my read.",
+      "lower": "Ana: Oh, you're right. You're always right. How could I possibly disagree with you."
+    },
+    {
+      "id": "limit.quoted_speech_single",
+      "indicator": "concession",
+      "claim": "Straight single quotes are indistinguishable from apostrophes, so quoted speech marked that way cannot be excluded. Expected to fail.",
+      "higher": "Ana: I was wrong about the numbers and I should have checked before I said it.",
+      "lower": "Ana: He stood up and said 'you're right, I was wrong', and everyone just moved on."
+    },
+    {
+      "id": "limit.negated_marker",
+      "indicator": "concession",
+      "claim": "A negated concession should not count as a concession.",
+      "higher": "Ana: You're right about that, I hadn't considered it.",
+      "lower": "Ana: I would never say you're right about this, and I'm not going to pretend I was wrong."
+    },
+    {
+      "id": "limit.reported_contempt",
+      "indicator": "contempt",
+      "claim": "Reporting that someone else was contemptuous should not score as this speaker's contempt.",
+      "higher": "Ana: That's a stupid take and you are being ridiculous.",
+      "lower": "Ana: He called the whole room stupid and said we were being ridiculous, which is why I left."
+    }
+  ]
+}

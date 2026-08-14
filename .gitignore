@@ -1,0 +1,77 @@
+# Dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Credentials. The server needs none, but nothing stops someone adding one.
+.env
+.env.*
+*.pem
+
+
+# ---------------------------------------------------------------------
+# Participant data
+#
+# This tool exists to process recordings of real people having difficult
+# conversations, often about things they would not say publicly. A single
+# stray transcript pushed to a public remote is a privacy breach that
+# cannot be undone by deleting it later.
+#
+# Media and transcript formats are ignored everywhere in the tree by
+# default. The synthetic fixtures are re-included below because the test
+# suite needs them.
+# ---------------------------------------------------------------------
+
+# Conventional working directories for real material
+transcripts/
+recordings/
+audio/
+sessions/
+private/
+
+# Audio and video
+*.wav
+*.mp3
+*.m4a
+*.aac
+*.flac
+*.ogg
+*.opus
+*.wma
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.m4v
+
+# Transcript formats
+*.vtt
+*.srt
+
+# Scored output, which quotes participants verbatim
+reports/
+out/
+*.score.json
+*-report.md
+*-cohort.json
+
+# Synthetic fixtures are safe to publish and required by `npm test`.
+# Keep this after the patterns above so it wins.
+!fixtures/
+!fixtures/**
+
+
+# ---------------------------------------------------------------------
+# Drafts not for public release
+#
+# A competitive grant application naming the applying organization.
+# Remove this line once it has been submitted and you want it public.
+# ---------------------------------------------------------------------
+CONCEPT-NOTE.md
