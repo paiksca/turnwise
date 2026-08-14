@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 /**
- * bridgescore-mcp
+ * turnwise
  *
  * Scores dialogue transcripts for bridging quality and returns the exact spans
- * behind every number. Runs over stdio.
+ * with quoted evidence for each score. Runs over stdio.
  *
- * No API key. Nothing leaves the machine. Scoring is deterministic, so the same
- * transcript produces the same numbers on every run and on every machine, which
- * is what makes comparison across a year of workshops mean anything.
+ * Scoring is deterministic, so the same transcript always produces the same
+ * numbers, which is what lets one year be compared against another.
  *
  * The division of labor: this server measures, the model that calls it
  * interprets. `extract_evidence` exists for exactly that handoff.
@@ -46,12 +45,12 @@ import type { ConversationScore } from "./types.js";
 const VERSION = "0.2.0";
 
 const server = new McpServer(
-  { name: "bridgescore", version: VERSION },
+  { name: "turnwise", version: VERSION },
   {
     instructions: [
-      "bridgescore measures dialogue transcripts for bridging quality: receptiveness, perspective-taking, contempt, curiosity, concession, and personal disclosure.",
+      "turnwise measures dialogue transcripts for bridging quality: receptiveness, perspective-taking, contempt, curiosity, concession, and personal disclosure.",
       "",
-      "It is a deterministic instrument. Marker matching is exact and reproducible, every score decomposes into quoted spans with character offsets, and it runs locally with no API key and no network.",
+      "It is a deterministic instrument. Marker matching is exact and reproducible, every score decomposes into quoted spans with character offsets.",
       "",
       "You supply the judgment. Use score_conversation for the numbers, then extract_evidence when the reading matters: it hands you every pattern match to confirm or reject, plus the turns where no pattern fired and a word list is most likely to have missed something.",
       "",
@@ -157,7 +156,7 @@ server.registerTool(
       const lines = [
         `# Parsed: ${conv.id}`,
         "",
-        `Format **${conv.sourceFormat}** · ${structure.turnCount} turns · ${structure.wordCount.toLocaleString()} words · ${structure.speakerCount} speakers`,
+        `Detected ${conv.sourceFormat}: ${structure.turnCount} turns and ${structure.wordCount.toLocaleString()} words across ${structure.speakerCount} speakers.`,
         "",
         "| Speaker | Turns | Words | Airtime | Question turns | Mean words/turn |",
         "| --- | --- | --- | --- | --- | --- |",
@@ -166,7 +165,7 @@ server.registerTool(
             `| ${p.speaker} | ${p.turns} | ${p.words} | ${(p.airtimeShare * 100).toFixed(0)}% | ${p.questionTurns} | ${p.meanWordsPerTurn} |`,
         ),
         "",
-        `Airtime Gini ${structure.airtimeGini.toFixed(2)} · questions in ${(structure.questionRate * 100).toFixed(0)}% of turns`,
+        `Airtime Gini is ${structure.airtimeGini.toFixed(2)}, and questions appear in ${(structure.questionRate * 100).toFixed(0)}% of turns.`,
         "",
         "First turns as parsed:",
         "",
@@ -197,7 +196,7 @@ server.registerTool(
   {
     title: "Transcribe a recording",
     description:
-      "Transcribe a single audio or video recording to WebVTT using a local speech model. Runs entirely on this machine; nothing is uploaded. Note that a single mixed track cannot be reliably split by speaker, so the result has no speaker labels and cannot produce per-speaker scores. For that, record one file per participant and use transcribe_session.",
+      "Transcribe a single audio or video recording to WebVTT using a local speech model. Audio stays on this machine. A mixed track cannot be reliably split by speaker, so the result omits speaker labels and cannot produce per-speaker scores. For those, record one file per participant and use transcribe_session.",
     inputSchema: {
       file_path: z.string().describe("Path to an audio or video file."),
       model: z.string().optional().describe("Speech model size, e.g. tiny, base, small, medium."),
@@ -216,7 +215,7 @@ server.registerTool(
       const md = [
         `# Transcribed: ${path.basename(args.file_path)}`,
         "",
-        `Backend ${res.backend} · ${conv.turns.length} segments · speaker labels: ${res.speakerLabeled ? "yes" : "no"}`,
+        `Backend ${res.backend} produced ${conv.turns.length} segments${res.speakerLabeled ? " with speaker labels." : " without speaker labels."}`,
         "",
         ...res.notes.map((n) => `- ${n}`),
         "",
@@ -239,7 +238,7 @@ server.registerTool(
   {
     title: "Transcribe a multitrack session",
     description:
-      "Transcribe a folder of per-participant recordings and merge them into one speaker-labeled transcript ordered by timestamp. Because each file contains exactly one person, speaker attribution is exact and no diarization model is involved. This is the recommended path for anything that needs per-speaker scores. In Zoom, enable Settings > Recording > 'Record a separate audio file for each participant'. Speaker names come from the filenames.",
+      "Transcribe a folder of per-participant recordings and merge them into one speaker-labeled transcript ordered by timestamp. Each file contains exactly one person, so speaker attribution is exact. This is the recommended path for anything that needs per-speaker scores. In Zoom, enable Settings > Recording > 'Record a separate audio file for each participant'. Speaker names come from the filenames.",
     inputSchema: {
       directory: z.string().describe("Folder containing one audio file per participant."),
       speaker_names: z
@@ -263,7 +262,7 @@ server.registerTool(
       const md = [
         `# Session transcribed: ${path.basename(args.directory)}`,
         "",
-        `Backend ${res.backend} · ${conv.turns.length} turns · speakers: ${conv.speakers.join(", ")}`,
+        `Backend ${res.backend} produced ${conv.turns.length} turns for ${conv.speakers.join(", ")}.`,
         "",
         ...res.notes.map((n) => `- ${n}`),
         "",
@@ -293,11 +292,11 @@ server.registerTool(
         `ffmpeg (needed for video and multitrack): ${caps.ffmpeg ? "installed" : "not found"}`,
         "",
         caps.backends.length
-          ? ["Speech backends found:", "", ...caps.backends.map((b) => `- \`${b.command}\` — ${b.label}`)].join("\n")
+          ? ["Speech backends found:", "", ...caps.backends.map((b) => `- \`${b.command}\`: ${b.label}`)].join("\n")
           : `No speech backend found.\n\n${INSTALL_HELP}`,
         "",
         caps.canTranscribe
-          ? "Transcription is available. Everything runs locally; no audio is uploaded."
+          ? "Transcription is available."
           : "Transcription is unavailable until one backend is installed. Text transcripts still work.",
       ];
       return result(lines.join("\n"), caps);
@@ -316,7 +315,7 @@ server.registerTool(
   {
     title: "Score a dialogue transcript",
     description:
-      "Score a conversation for bridging quality. Returns a 0-4 score per speaker per indicator (receptiveness, perspective-taking, contempt, curiosity, concession, personal disclosure), each with quoted evidence anchored to turn numbers, a confidence value, and deterministic airtime metrics. Scoring is local, free, and reproducible: the same transcript always yields the same numbers. Set arc_segments to 3 to see how the conversation changed from opening to close.",
+      "Score a conversation for bridging quality. Returns a 0-4 score per speaker per indicator (receptiveness, perspective-taking, contempt, curiosity, concession, personal disclosure), each with quoted evidence anchored to turn numbers, a confidence value, and deterministic airtime metrics. Set arc_segments to 3 to see how the conversation changed from opening to close.",
     inputSchema: {
       ...transcriptInput,
       indicators: z
@@ -384,7 +383,7 @@ server.registerTool(
         "",
         ...pkg.candidates.map(
           (c) =>
-            `- **${c.label}** (${c.direction === "supports" ? "supports" : "counts against"}) · ${c.speaker}, turn ${c.turnIndex} · rule: ${c.rule}\n  > "${c.quote}"`,
+            `- ${c.label} ${c.direction === "supports" ? "supports" : "counts against"}, from ${c.speaker} at turn ${c.turnIndex}, matched by the rule "${c.rule}".\n  > "${c.quote}"`,
         ),
         "",
         "## Turns with no pattern match",
@@ -462,7 +461,7 @@ server.registerTool(
       }
       lines.push(
         "",
-        "Two conversations differ for many reasons besides the intervention: who was in the room, the topic, the day. This describes two sessions; it does not estimate an effect.",
+        "Two conversations differ for many reasons besides the intervention: who was in the room, the topic, the day. This describes two sessions.",
       );
 
       const { features: _fa, ...ra } = a;
@@ -533,11 +532,11 @@ server.registerTool(
 
 server.registerResource(
   "rubrics",
-  "bridgescore://rubrics",
+  "turnwise://rubrics",
   {
     title: "Indicator rubrics",
     description:
-      "Every indicator definition, marker list, scale anchor, limitation, and citation, as JSON. This is the published measurement definition; any client can read it to check what the numbers mean.",
+      "The indicator definitions, marker lists, scale anchors, limitations, and citations, as JSON. This is the published measurement definition. Any client can read it to check what the numbers mean.",
     mimeType: "application/json",
   },
   async (uri) => ({
@@ -553,7 +552,7 @@ server.registerResource(
 
 server.registerResource(
   "methodology",
-  "bridgescore://methodology",
+  "turnwise://methodology",
   {
     title: "Methodology and validation status",
     description:
@@ -591,7 +590,7 @@ server.registerPrompt(
             "",
             "Parse it first to confirm speakers were detected correctly. Then score it with arc_segments set to 3. Then call extract_evidence and check the pattern matches yourself, rejecting any that do not hold up and noting anything in the unmatched turns that the patterns missed.",
             "",
-            "Write the summary for the facilitator. Lead with what actually happened in the conversation. Quote the evidence for anything you claim. Say plainly where confidence is low or where your reading differs from the automatic score.",
+            "Write the summary for the facilitator. Lead with what happened in the conversation. Quote the evidence for anything you claim. Say plainly where confidence is low or where your reading differs from the automatic score.",
           ].join("\n"),
         },
       },
@@ -620,7 +619,7 @@ server.registerPrompt(
             "",
             "Write for a program officer who will show this to a funder. Lead with the finding. Include the caveats from the cohort report verbatim rather than softening them, and include at least two participant quotes as illustration.",
             "",
-            "Do not claim the program caused any difference you report. Participants were not randomly assigned, so differences are descriptive.",
+            "Do not claim the program caused any difference you report. Participants choose which workshop to attend, so a difference may come from who signed up.",
           ].join("\n"),
         },
       },
@@ -645,9 +644,10 @@ computed rather than matched: follow-up questions, detected as questions reusing
 content words from the previous speaker's turn, and reciprocated disclosure,
 detected as personal disclosure following someone else's within two turns.
 
-No model is involved. The same transcript produces identical output on every run
-and every machine, which is what makes comparison across a year of workshops
-meaningful. A model-judged score silently changes when the model does.
+The whole pipeline is arithmetic over pattern matches, so the same transcript
+always produces identical output. That is what makes
+comparison across a year of workshops meaningful. A model-judged score changes when
+the model does.
 
 ## What the scores are not
 
@@ -680,8 +680,9 @@ from anything self-reported. Below 0.5, read the evidence before using the numbe
 ## Using this in a report
 
 Report the evidence alongside the number and keep the caveats. Do not claim a
-program caused a difference between groups: participants were not randomly
-assigned, so a difference is a description, not a causal estimate.
+program caused a difference between groups. Participants choose which workshop
+to attend, so a difference may come from who signed up rather than from
+anything the program did.
 
 ## What would make these validated
 
@@ -699,11 +700,11 @@ async function main() {
   await server.connect(new StdioServerTransport());
   // stderr only: stdout carries the protocol.
   process.stderr.write(
-    `bridgescore-mcp ${VERSION} (rubric v${RUBRIC_VERSION}, engine ${ENGINE}) ready on stdio\n`,
+    `turnwise ${VERSION} (rubric v${RUBRIC_VERSION}, engine ${ENGINE}) ready on stdio\n`,
   );
 }
 
 main().catch((err) => {
-  process.stderr.write(`bridgescore-mcp failed to start: ${err?.stack ?? err}\n`);
+  process.stderr.write(`turnwise failed to start: ${err?.stack ?? err}\n`);
   process.exit(1);
 });

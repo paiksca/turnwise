@@ -3,8 +3,8 @@
  *
  * Bridging organizations record conversations; almost none of them transcribe
  * consistently, which is a large part of why the recordings never turn into
- * anything reportable. This module closes that gap without sending participant
- * audio to a third party: everything runs against tools already on the machine.
+ * anything reportable. This module closes that gap using tools already on the
+ * machine, so participant audio stays local.
  *
  * Diarization is the hard part. Whisper and its variants produce excellent text
  * with no idea who was speaking, and per-speaker scores are the whole point
@@ -17,7 +17,7 @@
  *      change one recording setting, this is the setting.
  *   2. Single track. Transcribed as one stream and returned with speaker
  *      labels absent. Guessed speakers produce confidently
- *      wrong per-speaker scores, which is worse than none.
+ *      wrong per-speaker scores.
  */
 
 import { execFile } from "node:child_process";
@@ -109,8 +109,7 @@ export const INSTALL_HELP = `No local transcription backend was found. Install a
   Cross-platform:           pip install -U openai-whisper
   No Python:                brew install whisper-cpp
   Also recommended:         brew install ffmpeg   (needed for video files and multitrack)
-
-Everything runs locally. Participant audio is never uploaded.`;
+`;
 
 export interface TranscribeOptions {
   /** Whisper model size. Smaller is faster and less accurate. */
@@ -155,7 +154,7 @@ export async function transcribeFile(
         `${abs} is a video file and ffmpeg is not installed, so the audio cannot be extracted. Install ffmpeg (brew install ffmpeg) or supply an audio file.`,
       );
     }
-    tmp = await mkdtemp(path.join(os.tmpdir(), "bridgescore-"));
+    tmp = await mkdtemp(path.join(os.tmpdir(), "turnwise-"));
     source = path.join(tmp, "audio.wav");
     await run("ffmpeg", ["-i", abs, "-ac", "1", "-ar", "16000", "-vn", "-y", source]);
     notes.push("Audio extracted from video with ffmpeg at 16 kHz mono.");
@@ -186,8 +185,8 @@ export interface SessionOptions extends TranscribeOptions {
  * Transcribe a folder of per-speaker recordings and interleave them by
  * timestamp into a single speaker-labeled transcript.
  *
- * Because each track contains exactly one person, attribution is exact. This is
- * the recommended path, and it needs no diarization model.
+ * Each track contains exactly one person, so attribution is exact. This is the
+ * recommended path.
  */
 export async function transcribeSession(
   dir: string,
@@ -231,7 +230,7 @@ export async function transcribeSession(
     speakerLabeled: true,
     notes: [
       `Merged ${media.length} per-speaker tracks into one transcript: ${speakers.join(", ")}.`,
-      "Speaker attribution is exact because each track contains one participant, so no diarization model was involved.",
+      "Each track contains one participant, so speaker attribution is exact.",
       "Cross-talk appears as adjacent turns ordered by start time.",
     ],
   };
@@ -273,7 +272,7 @@ async function runBackend(
   file: string,
   opts: TranscribeOptions,
 ): Promise<string> {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "bridgescore-out-"));
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "turnwise-out-"));
   try {
     const model = opts.model ?? defaultModel(backend);
     const args = buildArgs(backend, file, outDir, model, opts.language);

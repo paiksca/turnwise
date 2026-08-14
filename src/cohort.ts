@@ -132,7 +132,7 @@ export function buildCohortReport(
       });
 
       caveats.push(
-        "Group differences are descriptive. Participants were not randomly assigned to groups, so a difference here is not a causal estimate of program effect.",
+        "Participants choose which workshop to attend, so a difference between these groups may come from who signed up rather than from anything the program did.",
       );
     } else if (names.length > 2) {
       caveats.push(

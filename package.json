@@ -1,11 +1,11 @@
 {
-  "name": "bridgescore-mcp",
+  "name": "turnwise",
   "version": "0.2.0",
-  "description": "MCP server that scores dialogue transcripts for bridging quality - receptiveness, perspective-taking, contempt, curiosity, concession, and personal disclosure - with the exact quoted spans behind every number. Deterministic, local, no API key.",
+  "description": "Scores dialogue transcripts for bridging quality.",
   "license": "Apache-2.0",
   "type": "module",
   "bin": {
-    "bridgescore-mcp": "dist/index.js"
+    "turnwise": "dist/index.js"
   },
   "main": "dist/index.js",
   "files": [
@@ -36,14 +36,15 @@
   "author": "Beyond Partisan (https://beyondpartisan.org)",
   "keywords": [
     "mcp",
-    "model-context-protocol",
-    "dialogue",
-    "bridging",
     "depolarization",
-    "civic-tech",
-    "conversation-analysis",
-    "transcript",
-    "measurement",
-    "nonprofit"
-  ]
+    "conversation-analysis"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paiksca/turnwise.git"
+  },
+  "homepage": "https://github.com/paiksca/turnwise#readme",
+  "bugs": {
+    "url": "https://github.com/paiksca/turnwise/issues"
+  }
 }

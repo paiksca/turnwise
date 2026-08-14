@@ -5,13 +5,12 @@
  * it is called BY one. That split is deliberate:
  *
  *   - This layer does what code does well: exact marker matching, counting,
- *     rate normalization, arithmetic. Reproducible, free, private, auditable.
+ *     rate normalization, arithmetic.
  *   - The calling model does what models do well: reading the evidence, judging
  *     whether a concession was genuine, catching sarcasm a word list misses,
  *     and writing the narrative for a human.
  *
- * Scores therefore never drift when a model version changes, and participant
- * transcripts never leave the machine.
+ * Scores therefore stay stable across model versions.
  */
 
 import { computeStructure, mean, round, segmentTurns } from "./metrics.js";
@@ -54,7 +53,7 @@ export function scoreConversation(
   for (const f of features) {
     if (f.wordCount < 60) {
       warnings.push(
-        `${f.speaker} contributed only ${f.wordCount} words. Rate-based scores over that little text are unstable; treat them as directional.`,
+        `${f.speaker} contributed only ${f.wordCount} words. Rate-based scores over that little text are unstable. Treat them as directional.`,
       );
     }
   }
@@ -259,7 +258,7 @@ export function buildEvidencePackage(
       "Each candidate is an exact pattern match, not a judgment. Confirm or reject each one against the quote.",
       "Reject a candidate when the phrase does not carry its usual meaning here. Sarcastic agreement, quoted speech, and someone repeating another person's words back to criticize them all match patterns they should not.",
       "The unmatched turns are where a word list is weakest. Read them for behavior no pattern would catch: an unusual concession, contempt carried entirely by implication, a story told without any of the usual framing.",
-      "Contempt is systematically undercounted in text, because tone of voice carries most of it. Weight ambiguous cases toward the reading the transcript actually supports rather than assuming the worst.",
+      "Contempt is systematically undercounted in text, because tone of voice carries most of it. Weight ambiguous cases toward the reading the transcript supports rather than assuming the worst.",
       "When you report back, keep every number attached to the quote it rests on, and say plainly where the evidence is thin.",
     ],
   };

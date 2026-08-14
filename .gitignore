@@ -67,11 +67,4 @@ out/
 !fixtures/
 !fixtures/**
 
-
-# ---------------------------------------------------------------------
-# Drafts not for public release
-#
-# A competitive grant application naming the applying organization.
-# Remove this line once it has been submitted and you want it public.
-# ---------------------------------------------------------------------
 CONCEPT-NOTE.md

@@ -275,7 +275,7 @@ test("calibration minimal pairs all order correctly", () => {
   assert.ok(r.passed >= 20, `expected a substantive calibration set, got ${r.passed}`);
 });
 
-test("known limitations are tracked and have not silently grown", () => {
+test("known limitations are tracked and have not grown", () => {
   const r = runCalibration(false);
   // Sarcasm and straight-single-quote attribution cannot be resolved by pattern
   // matching. If this count rises, a lexicon edit introduced a new blind spot.

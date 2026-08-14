@@ -3,7 +3,7 @@
  *
  * These patterns are the measurement instrument. They run locally, produce the
  * same output on the same input forever, and every hit is an exact character
- * offset in the source text — so evidence is verified by construction rather
+ * offset in the source text, so evidence is verified by construction rather
  * than checked after the fact.
  *
  * The feature families follow the published work: the acknowledgment / hedging /
@@ -17,7 +17,7 @@
  * plain disagreement.
  *
  * Editing this file changes the instrument. Bump RUBRIC_VERSION when you do,
- * or year-over-year comparisons silently stop meaning anything.
+ * or year-over-year comparisons stop meaning anything.
  */
 
 import type { IndicatorKey } from "./rubrics.js";
@@ -175,7 +175,7 @@ const RECEPTIVENESS: Marker[] = [
   },
   {
     id: "recept.hollow_pivot",
-    // "I hear you, but" / "fair point, but" — acknowledgment immediately negated.
+    // "I hear you, but" and "fair point, but": acknowledgment immediately negated.
     pattern:
       /\b(?:i hear (?:you|that)|i understand|fair enough|fair point|good point|that's fair|you're right)\b[^.!?]{0,30}?,?\s*(?:but|however|although|still)\b/gi,
     weight: -0.7,
@@ -494,7 +494,7 @@ const CONCESSION: Marker[] = [
     pattern:
       /\b(?:you're right|that's true|fair point|good point|point taken)\b[^.!?]{0,25}?,?\s*(?:but|however|still|although)\b/gi,
     weight: -0.8,
-    note: "Concession immediately withdrawn, so nothing was actually granted",
+    note: "Concession immediately withdrawn, so nothing was granted",
   },
 ];
 

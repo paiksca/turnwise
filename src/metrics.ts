@@ -1,10 +1,10 @@
 /**
  * Deterministic conversation metrics.
  *
- * No model involved. These are cheap, reproducible, and defensible without any
- * claim about judgment — which makes them the right things to put next to the
- * model-judged indicators in a funder report. Airtime imbalance in particular
- * is a facilitation signal that needs no interpretation.
+ * These are cheap and reproducible, and they are defensible without any claim
+ * about judgment, which makes them the right things to put next to the scored
+ * indicators in a funder report. Airtime imbalance in particular
+ * is a facilitation signal a reader can act on directly.
  */
 
 import { wordCount } from "./parse.js";

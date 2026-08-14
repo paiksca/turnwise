@@ -4,11 +4,11 @@
  * Each case is a minimal pair: two utterances that differ in exactly one
  * behavior, plus the ordering the instrument has to produce. Absolute score
  * values depend on thresholds that are still provisional; the ordering is what
- * the construct actually claims, so that is what gets asserted.
+ * the construct claims, so that is what gets asserted.
  *
  * This is the file to run after any lexicon edit. A rule that fixes one case
- * and quietly breaks three others is the normal failure mode for hand-built
- * lexicons, and only a standing suite catches it.
+ * and breaks three others is the normal failure mode for hand-built lexicons,
+ * and only a standing suite catches it.
  *
  * Run: node dist/calibrate.js
  */
@@ -73,7 +73,7 @@ export function runCalibration(verbose = true): CalibrationResult {
       // Ordering that only holds because the weaker side scored nothing proves
       // the marker fired, not that the two are graded apart.
       ok = false;
-      extra = " — lower side scored 0, so this does not test grading";
+      extra = ". Lower side scored 0, so this does not test grading";
     }
 
     if (ok) {
@@ -105,7 +105,7 @@ export function runCalibration(verbose = true): CalibrationResult {
       limitationsMissed.push(c.id);
       if (verbose)
         console.log(
-          `  MISSED   ${c.id}  (${hi.toFixed(2)} vs ${lo.toFixed(2)}) — ${c.claim}`,
+          `  MISSED   ${c.id}  (${hi.toFixed(2)} vs ${lo.toFixed(2)}): ${c.claim}`,
         );
     }
   }
