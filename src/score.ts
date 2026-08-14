@@ -5,13 +5,12 @@
  * it is called BY one. That split is deliberate:
  *
  *   - This layer does what code does well: exact marker matching, counting,
- *     rate normalization, arithmetic. Reproducible, free, private, auditable.
+ *     rate normalization, arithmetic.
  *   - The calling model does what models do well: reading the evidence, judging
  *     whether a concession was genuine, catching sarcasm a word list misses,
  *     and writing the narrative for a human.
  *
- * Scores therefore never drift when a model version changes, and participant
- * transcripts never leave the machine.
+ * Scores therefore stay stable across model versions.
  */
 
 import { computeStructure, mean, round, segmentTurns } from "./metrics.js";
@@ -54,7 +53,7 @@ export function scoreConversation(
   for (const f of features) {
     if (f.wordCount < 60) {
       warnings.push(
-        `${f.speaker} contributed only ${f.wordCount} words. Rate-based scores over that little text are unstable; treat them as directional.`,
+        `${f.speaker} contributed only ${f.wordCount} words. Rate-based scores over that little text are unstable. Treat them as directional.`,
       );
     }
   }

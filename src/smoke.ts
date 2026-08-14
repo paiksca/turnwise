@@ -2,8 +2,9 @@
  * End-to-end smoke test over the real MCP protocol.
  *
  * Spawns the server over stdio exactly as Claude Desktop would, then exercises
- * every tool, resource, and prompt. Nothing here needs an API key or network
- * access, so this exercises the real thing end to end.
+ * prose-lint-disable-next-line rule-of-three (tools, resources, and prompts are the three MCP primitives)
+ * every tool, resource, and prompt against the running server, so this
+ * exercises the real thing end to end.
  *
  * Run: node dist/smoke.js
  */
@@ -23,7 +24,7 @@ function check(label: string, ok: boolean, detail = "") {
     console.log(`  ok   ${label}`);
   } else {
     failures++;
-    console.log(`  FAIL ${label}${detail ? ` — ${detail}` : ""}`);
+    console.log(`  FAIL ${label}${detail ? `: ${detail}` : ""}`);
   }
 }
 
@@ -68,13 +69,13 @@ async function main() {
   const prompts = await client.listPrompts();
   check("prompts advertised", prompts.prompts.length === 2);
 
-  console.log("\nparse_transcript (VTT, no API key needed)");
+  console.log("\nparse_transcript (VTT)");
   const vtt = await client.callTool({
     name: "parse_transcript",
     arguments: { transcript_path: path.join(fixtures, "housing-workshop.vtt") },
   });
   const vttText = textOf(vtt);
-  check("detects vtt", vttText.includes("**vtt**"));
+  check("detects vtt", vttText.includes("Detected vtt"));
   check("finds all three speakers", ["Dana", "Marcus", "Facilitator"].every((s) => vttText.includes(s)));
   check("reports airtime", vttText.includes("Airtime Gini"));
   check("no unknown speakers", !vttText.includes("| Unknown |"));
@@ -102,16 +103,16 @@ async function main() {
   check("cites provenance", explainText.includes("Gottman"));
 
   console.log("\nresources");
-  const rubrics = await client.readResource({ uri: "bridgescore://rubrics" });
+  const rubrics = await client.readResource({ uri: "turnwise://rubrics" });
   const parsed = JSON.parse((rubrics.contents[0] as any).text);
   check("rubric resource parses as JSON", typeof parsed.version === "string");
   check("carries all six indicators", Object.keys(parsed.indicators).length === 6);
 
-  const method = await client.readResource({ uri: "bridgescore://methodology" });
+  const method = await client.readResource({ uri: "turnwise://methodology" });
   const methodText = (method.contents[0] as any).text as string;
   check("methodology states validation status", methodText.includes("Not validated instrument scores"));
 
-  console.log("\nanalyze_cohort (deterministic, no API key)");
+  console.log("\nanalyze_cohort (deterministic)");
   const fakeScores = [0, 1].map((i) => ({
     conversationId: `conv_${i}`,
     model: "test",
@@ -183,7 +184,7 @@ async function main() {
     textOf(missing),
   );
 
-  console.log("\nscore_conversation (deterministic, no key)");
+  console.log("\nscore_conversation (deterministic)");
   const scored = await client.callTool({
     name: "score_conversation",
     arguments: {

@@ -3,7 +3,7 @@
  *
  * Bridging organizations record on Zoom, Otter, Rev, Descript, or a volunteer
  * with a notepad. All of it has to land as the same `Turn[]`. Parsing is
- * deterministic and model-free — no API key needed to use `parse_transcript`.
+ * deterministic and model-free, so `parse_transcript` runs offline.
  *
  * Consecutive segments from the same speaker are merged into one turn, because
  * caption formats split a single utterance across many cue blocks and a turn

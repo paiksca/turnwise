@@ -20,14 +20,14 @@ export function renderConversationReport(score: ConversationScore): string {
     out.push(
       Object.entries(score.meta)
         .map(([k, v]) => `**${k}:** ${v}`)
-        .join(" · "),
+        .join(". "),
     );
     out.push("");
   }
 
   out.push(
-    `${s.turnCount} turns · ${s.wordCount.toLocaleString()} words · ${s.speakerCount} speakers` +
-      (s.durationSec ? ` · ${Math.round(s.durationSec / 60)} min` : ""),
+    `${s.turnCount} turns and ${s.wordCount.toLocaleString()} words across ${s.speakerCount} speakers` +
+      (s.durationSec ? `, running about ${Math.round(s.durationSec / 60)} minutes.` : "."),
   );
   out.push("");
 
@@ -98,7 +98,7 @@ export function renderConversationReport(score: ConversationScore): string {
   out.push("---");
   out.push("");
   out.push(
-    `Scored by ${score.model}, rubric v${score.rubricVersion}, at ${score.scoredAt}. These are pattern-based observations against a published rubric. Validation status and known limits are in METHODOLOGY.md; read it before putting these numbers in a funder report.`,
+    `Scored by ${score.model}, rubric v${score.rubricVersion}, at ${score.scoredAt}. These are pattern-based observations against a published rubric. Validation status and known limits are in METHODOLOGY.md. Read it before putting these numbers in a funder report.`,
   );
 
   return out.join("\n");
@@ -106,9 +106,10 @@ export function renderConversationReport(score: ConversationScore): string {
 
 function renderIndicator(ind: IndicatorScore): string {
   const lines: string[] = [];
-  const countPart = ind.count !== undefined ? ` · ${ind.count} instance${ind.count === 1 ? "" : "s"}` : "";
+  const countPart =
+    ind.count !== undefined ? `, from ${ind.count} instance${ind.count === 1 ? "" : "s"}` : "";
   lines.push(
-    `### ${ind.label}: ${fmt(ind.score)}${countPart} · confidence ${ind.confidence.toFixed(2)}`,
+    `### ${ind.label}: ${fmt(ind.score)}, confidence ${ind.confidence.toFixed(2)}${countPart}`,
   );
   lines.push("");
   lines.push(ind.rationale);
@@ -147,7 +148,7 @@ export function renderCohortReport(report: CohortReport): string {
   out.push(`# Cohort report`);
   out.push("");
   out.push(
-    `${report.conversationCount} conversations · ${report.speakerObservations} speaker observations · rubric v${report.rubricVersion}`,
+    `${report.conversationCount} conversations covering ${report.speakerObservations} speaker observations, scored under rubric v${report.rubricVersion}.`,
   );
   out.push("");
 
@@ -252,5 +253,5 @@ function giniNote(g: number, speakers: number): string {
   if (speakers < 2) return "";
   if (g < 0.2) return "Airtime was close to even.";
   if (g < 0.4) return "Airtime was somewhat uneven.";
-  return "Airtime was heavily concentrated; worth checking against the facilitator's read of the session.";
+  return "Airtime was heavily concentrated. Check this against the facilitator's read of the session.";
 }

@@ -73,7 +73,7 @@ export function runCalibration(verbose = true): CalibrationResult {
       // Ordering that only holds because the weaker side scored nothing proves
       // the marker fired, not that the two are graded apart.
       ok = false;
-      extra = " — lower side scored 0, so this does not test grading";
+      extra = ". Lower side scored 0, so this does not test grading";
     }
 
     if (ok) {
@@ -105,7 +105,7 @@ export function runCalibration(verbose = true): CalibrationResult {
       limitationsMissed.push(c.id);
       if (verbose)
         console.log(
-          `  MISSED   ${c.id}  (${hi.toFixed(2)} vs ${lo.toFixed(2)}) — ${c.claim}`,
+          `  MISSED   ${c.id}  (${hi.toFixed(2)} vs ${lo.toFixed(2)}): ${c.claim}`,
         );
     }
   }

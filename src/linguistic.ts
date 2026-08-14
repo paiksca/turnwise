@@ -1,14 +1,12 @@
 /**
  * Deterministic scoring engine.
  *
- * Runs entirely locally. No API key, no network, no per-transcript cost, and
- * the same transcript produces the same numbers on every run and every machine.
- * That last property is what makes year-over-year comparison meaningful: a
- * model-judged score silently changes when the model does, and a funder report
- * built on drifting numbers is worse than no report.
+ * The same transcript always produces the same numbers, which is what lets one
+ * year be compared against another. A model-judged score changes when the model
+ * does.
  *
- * Every score decomposes into marker hits with exact character offsets, so the
- * the evidence is the text itself.
+ * Scores decompose into marker hits with exact character offsets, so the
+ * evidence is the text itself.
  *
  * Two signals here are computed rather than matched, because the literature
  * points at them and a word list cannot capture them:
@@ -91,7 +89,7 @@ const NEGATIVE_CAP = 0.6;
  * construct: "you're right about the notification" is six words with one strong
  * marker and scores 28, while a fifty-word turn that restates the other's
  * position, hedges its own claim, and grants a point scores 11. The short reply
- * is not more receptive; there is just less text to divide by.
+ * is not more receptive. There is just less text to divide by.
  *
  * Dividing by at least MIN_DENOMINATOR words means short utterances are scored
  * on what they contain rather than on their brevity, and sustained work
@@ -300,7 +298,7 @@ function matchAll(marker: Marker, turn: Turn, indicator: IndicatorKey): MarkerHi
       continue;
     }
     // Words the speaker is quoting belong to whoever said them. "He stood up
-    // and said 'you're right, I was wrong'" is reporting, not conceding.
+    // and said 'you're right, I was wrong'" reports what someone else said.
     if (quoted.some(([a, b]) => m!.index >= a && m!.index < b)) continue;
     out.push({
       markerId: marker.id,
