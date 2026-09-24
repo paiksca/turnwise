@@ -59,8 +59,8 @@ The parser detects WebVTT, SRT, Otter, Rev, plain `Speaker: text`, and JSON.
 | Perspective-taking | higher is better | Kalla & Broockman (2020, 2023) |
 | Contempt | lower is better | Gottman & Levenson (1992, 2002) |
 | Curiosity | higher is better | Huang, Yeomans, Brooks, Minson & Gino (2017) |
-| Concession | higher is better | Deutsch (1973); Fisher & Ury |
-| Personal disclosure | higher is better | Broockman & Kalla (2016) |
+| Concession | higher is better | Hussein & Tormala (2021); Deutsch (1973); Fisher & Ury |
+| Personal disclosure | higher is better | Kubin, Puryear, Schein & Gray (2021); Broockman & Kalla (2016) |
 
 Follow-up questions and reciprocated disclosure are computed from turn structure, and `explain_indicator` covers the rest.
 

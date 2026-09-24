@@ -41,7 +41,7 @@ A score describes expressed behavior in one conversation, so it says nothing abo
 
 ## Using this in a funder report
 
-Report the evidence next to the number and keep the caveats, because the strongest available claim is behavioral and specific: "across 14 workshops and 212 participants, concession appeared in 68% of closing thirds against 31% of opening thirds, and here are the moments." Avoid "our program increased receptiveness by 40%."
+Report the evidence next to the number and keep the caveats, because the strongest available claim is behavioral and specific. With illustrative numbers, such a claim reads: "across 14 workshops and 212 participants, concession appeared in 68% of closing thirds against 31% of opening thirds, and here are the moments." Avoid "our program increased receptiveness by 40%."
 
 ## What would make these validated
 
@@ -51,7 +51,7 @@ Report the evidence next to the number and keep the caveats, because the stronge
 4. Calibration against self-report instruments on the same sessions.
 5. Test-retest across transcription backends, to quantify how much ASR error moves a score.
 
-Steps 1 and 2 are the fellowship work.
+The fellowship work covers all five steps.
 
 ## Versioning
 
