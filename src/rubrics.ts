@@ -229,6 +229,7 @@ export const RUBRICS: Record<IndicatorKey, Rubric> = {
     limits:
       "Captures stated concession in the room. It does not measure durable attitude change; that requires follow-up measurement outside this tool. A concession may be strategic or socially compelled.",
     provenance: [
+      "Hussein & Tormala (2021), 'Undermining Your Case to Enhance Your Impact: A Framework for Understanding the Effects of Acts of Receptiveness in Persuasion', Personality and Social Psychology Review. Conceding points and acknowledging drawbacks increase persuasive impact.",
       "Fisher & Ury, 'Getting to Yes'. Separating people from problems, and interests beneath positions.",
       "Deutsch (1973) on constructive vs. destructive conflict processes.",
       "Treated here as a behavioral proxy for the in-conversation moments that attitude-change measures pick up later.",
@@ -267,6 +268,7 @@ export const RUBRICS: Record<IndicatorKey, Rubric> = {
     limits:
       "Volume of disclosure is not intimacy or trust, and disclosure can be strategic. High disclosure in an unsafe setting may indicate poor facilitation rather than good dialogue.",
     provenance: [
+      "Kubin, Puryear, Schein & Gray (2021), 'Personal experiences bridge moral and political divides better than facts', PNAS. Opponents respect views backed by personal experience more than views backed by facts.",
       "Broockman & Kalla (2016), 'Durably reducing transphobia', Science. The deep-canvassing result.",
       "Kalla & Broockman (2023), AJPS. Narrative exchange outperforms argument exchange.",
       "Collins & Miller (1994) meta-analysis on self-disclosure and liking.",
